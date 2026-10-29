@@ -4,7 +4,7 @@
  * Supports auto-detection between local development and cloud deployments (Render).
  */
 
-const DEFAULT_PROD_API = "https://solar-backend-production.onrender.com";
+const DEFAULT_PROD_API = "https://solar-backend-b4nm.onrender.com";
 
 function getApiBase() {
   const custom = localStorage.getItem("sv_api_url");
