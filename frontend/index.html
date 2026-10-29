@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solar Vest — Smart Solar Investment Platform</title>
+  <meta name="description" content="Monitor your solar assets in real-time, predict energy generation with AI, and maximize ROI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+<body>
+
+  <!-- LOGIN PAGE -->
+  <div id="page-login" class="page active">
+    <div class="login-bg">
+      <div class="login-orb orb1"></div>
+      <div class="login-orb orb2"></div>
+      <div class="login-orb orb3"></div>
+    </div>
+    <div class="login-container">
+      <div class="login-brand">
+        <span class="brand-icon">⚡</span>
+        <h1>Solar<span class="brand-accent">Vest</span></h1>
+        <p>Smart Solar Investment Platform</p>
+      </div>
+      <div class="login-card glass">
+        <div class="tab-switcher">
+          <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Login</button>
+          <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="form-login" class="auth-form" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="login-email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" required />
+          </div>
+          <div id="login-error" class="form-error hidden"></div>
+          <button type="submit" class="btn-primary" id="login-btn">
+            <span>Sign In</span>
+          </button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="form-register" class="auth-form hidden" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="reg-name" placeholder="Arjun Singh" required />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="reg-email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="reg-password" placeholder="••••••••" required />
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <select id="reg-role">
+              <option value="owner">Panel Owner</option>
+              <option value="investor">Investor</option>
+            </select>
+          </div>
+          <div id="reg-error" class="form-error hidden"></div>
+          <button type="submit" class="btn-primary" id="register-btn">
+            <span>Create Account</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD PAGE -->
+  <div id="page-dashboard" class="page hidden">
+    <!-- Sidebar -->
+    <aside class="sidebar glass">
+      <div class="sidebar-brand">
+        <span class="brand-icon">⚡</span>
+        <span>Solar<strong>Vest</strong></span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="javascript:void(0)" class="nav-item active" onclick="showView('overview')" id="nav-overview">
+          <span class="nav-icon">📊</span> Overview
+        </a>
+        <a href="javascript:void(0)" class="nav-item" onclick="showView('panels')" id="nav-panels">
+          <span class="nav-icon">☀️</span> My Panels
+        </a>
+        <a href="javascript:void(0)" class="nav-item" onclick="showView('predict')" id="nav-predict">
+          <span class="nav-icon">🤖</span> AI Predict
+        </a>
+        <a href="javascript:void(0)" class="nav-item" onclick="showView('investor')" id="nav-investor">
+          <span class="nav-icon">💰</span> Investor View
+        </a>
+        <a href="javascript:void(0)" class="nav-item" onclick="showView('live')" id="nav-live">
+          <span class="nav-icon">📡</span> Live Sensors
+        </a>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-avatar" id="user-avatar">A</div>
+        <div class="user-info">
+          <span id="sidebar-username">Loading...</span>
+          <span id="sidebar-role" class="role-badge">owner</span>
+        </div>
+        <button class="logout-btn" onclick="logout()" title="Logout">⏻</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Overview View -->
+      <section id="view-overview" class="view active">
+        <div class="view-header">
+          <h2>Overview</h2>
+          <span class="view-subtitle">Your solar portfolio at a glance</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card glass">
+            <div class="stat-icon">☀️</div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-panels">—</span>
+              <span class="stat-label">Total Panels</span>
+            </div>
+          </div>
+          <div class="stat-card glass">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-kwh">—</span>
+              <span class="stat-label">Avg Monthly kWh</span>
+            </div>
+          </div>
+          <div class="stat-card glass">
+            <div class="stat-icon">💰</div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-revenue">—</span>
+              <span class="stat-label">Avg Monthly Revenue</span>
+            </div>
+          </div>
+          <div class="stat-card glass">
+            <div class="stat-icon">📈</div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-roi">—</span>
+              <span class="stat-label">Avg ROI (25yr)</span>
+            </div>
+          </div>
+        </div>
+        <div class="overview-grid">
+          <div class="card glass">
+            <div class="card-header">
+              <h3>Monthly Generation Forecast</h3>
+              <span class="card-tag">Top Panel</span>
+            </div>
+            <canvas id="chart-monthly" height="200"></canvas>
+          </div>
+          <div class="card glass">
+            <div class="card-header">
+              <h3>ROI Timeline</h3>
+              <span class="card-tag">25 Years</span>
+            </div>
+            <canvas id="chart-roi" height="200"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panels View -->
+      <section id="view-panels" class="view">
+        <div class="view-header">
+          <h2>My Solar Panels</h2>
+          <button class="btn-primary small" onclick="openAddPanel()">+ Add Panel</button>
+        </div>
+        <div id="panels-list" class="panels-grid">
+          <div class="loading-state">Loading panels...</div>
+        </div>
+
+        <!-- Add Panel Modal -->
+        <div id="modal-add-panel" class="modal-overlay hidden" onclick="closeModal(event)">
+          <div class="modal glass">
+            <h3>Register Solar Panel</h3>
+            <form onsubmit="handleAddPanel(event)">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Panel Name</label>
+                  <input type="text" id="p-name" placeholder="Rooftop Array A" required />
+                </div>
+                <div class="form-group">
+                  <label>City</label>
+                  <select id="p-city">
+                    <option>Delhi</option><option>Mumbai</option><option>Bangalore</option>
+                    <option>Chennai</option><option>Hyderabad</option><option>Kolkata</option>
+                    <option>Jaipur</option><option>Ahmedabad</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Area per Panel (m²)</label>
+                  <input type="number" id="p-area" step="0.1" min="0.1" value="1.7" required />
+                </div>
+                <div class="form-group">
+                  <label>Number of Panels</label>
+                  <input type="number" id="p-num" min="1" value="10" required />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Tilt Angle (°)</label>
+                  <input type="number" id="p-tilt" step="0.5" min="0" max="90" value="25" required />
+                </div>
+                <div class="form-group">
+                  <label>Azimuth Angle (°)</label>
+                  <input type="number" id="p-azimuth" step="1" min="0" max="360" value="180" required />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Panel Type</label>
+                  <select id="p-type">
+                    <option value="monocrystalline">Monocrystalline (20%)</option>
+                    <option value="polycrystalline">Polycrystalline (17%)</option>
+                    <option value="thin_film">Thin-film (12%)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Installation Cost (₹)</label>
+                  <input type="number" id="p-cost" min="1000" value="500000" required />
+                </div>
+              </div>
+              <div id="panel-error" class="form-error hidden"></div>
+              <div class="modal-actions">
+                <button type="button" class="btn-ghost" onclick="document.getElementById('modal-add-panel').classList.add('hidden')">Cancel</button>
+                <button type="submit" class="btn-primary">Register Panel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI Predict View -->
+      <section id="view-predict" class="view">
+        <div class="view-header">
+          <h2>AI Energy Prediction</h2>
+          <span class="view-subtitle">ML-powered generation forecast</span>
+        </div>
+        <div class="predict-layout">
+          <div class="card glass">
+            <h3>Select Panel & Month</h3>
+            <div class="form-group">
+              <label>Panel</label>
+              <select id="predict-panel-select"></select>
+            </div>
+            <div class="form-group">
+              <label>Month</label>
+              <select id="predict-month">
+                <option value="1">January</option><option value="2">February</option>
+                <option value="3">March</option><option value="4">April</option>
+                <option value="5">May</option><option value="6">June</option>
+                <option value="7">July</option><option value="8">August</option>
+                <option value="9">September</option><option value="10">October</option>
+                <option value="11">November</option><option value="12">December</option>
+              </select>
+            </div>
+            <button class="btn-primary" onclick="runPrediction()">Run AI Prediction</button>
+            <button class="btn-ghost" onclick="runYearlyForecast()" style="margin-top:8px">📅 Full Year Forecast</button>
+          </div>
+          <div class="predict-results">
+            <div id="predict-output" class="card glass predict-placeholder">
+              <div class="placeholder-icon">🤖</div>
+              <p>Select a panel and click "Run AI Prediction"</p>
+            </div>
+          </div>
+        </div>
+        <div id="forecast-chart-wrap" class="card glass hidden" style="margin-top:24px">
+          <div class="card-header"><h3>12-Month Generation Forecast</h3></div>
+          <canvas id="chart-forecast" height="150"></canvas>
+        </div>
+      </section>
+
+      <!-- Investor View -->
+      <section id="view-investor" class="view">
+        <div class="view-header">
+          <h2>Investor Portfolio</h2>
+          <span class="view-subtitle">ROI breakdown across all assets</span>
+        </div>
+        <div id="investor-portfolio" class="panels-grid">
+          <div class="loading-state">Loading portfolio...</div>
+        </div>
+      </section>
+
+      <!-- Live Sensors View -->
+      <section id="view-live" class="view">
+        <div class="view-header">
+          <h2>Live Sensor Data</h2>
+          <span class="view-subtitle">Real-time IoT readings</span>
+          <div class="live-indicator"><span class="pulse"></span> LIVE</div>
+        </div>
+        <div class="form-group" style="max-width:300px;margin-bottom:24px">
+          <label>Select Panel</label>
+          <select id="live-panel-select" onchange="loadLiveData()"></select>
+        </div>
+        <div class="sensors-grid">
+          <div class="sensor-card glass">
+            <div class="sensor-icon">⚡</div>
+            <div class="sensor-label">Current</div>
+            <div class="sensor-value" id="live-current">—</div>
+            <div class="sensor-unit">Amps</div>
+          </div>
+          <div class="sensor-card glass">
+            <div class="sensor-icon">🔋</div>
+            <div class="sensor-label">Voltage</div>
+            <div class="sensor-value" id="live-voltage">—</div>
+            <div class="sensor-unit">Volts</div>
+          </div>
+          <div class="sensor-card glass">
+            <div class="sensor-icon">💡</div>
+            <div class="sensor-label">Power</div>
+            <div class="sensor-value" id="live-power">—</div>
+            <div class="sensor-unit">Watts</div>
+          </div>
+          <div class="sensor-card glass">
+            <div class="sensor-icon">🌡️</div>
+            <div class="sensor-label">Temperature</div>
+            <div class="sensor-value" id="live-temp">—</div>
+            <div class="sensor-unit">°C</div>
+          </div>
+          <div class="sensor-card glass">
+            <div class="sensor-icon">☀️</div>
+            <div class="sensor-label">Irradiance</div>
+            <div class="sensor-value" id="live-irr">—</div>
+            <div class="sensor-unit">W/m²</div>
+          </div>
+          <div class="sensor-card glass">
+            <div class="sensor-icon">🕒</div>
+            <div class="sensor-label">Last Updated</div>
+            <div class="sensor-value" id="live-time" style="font-size:1rem">—</div>
+            <div class="sensor-unit">UTC</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="src/api.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
