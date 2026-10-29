@@ -92,21 +92,20 @@ This starts:
 - **Backend API** → http://localhost:8000 ([API Docs](http://localhost:8000/docs))
 - **ML Microservice** → http://localhost:8001 ([API Docs](http://localhost:8001/docs))
 
-### Default Accounts
+### Default Accounts & Roles
 
-| Role | Email | Password |
-|---|---|---|
-| Panel Owner | `owner@solarvest.com` | `password123` |
-| Investor | `investor@solarvest.com` | `password123` |
-| Administrator | `admin@solarvest.com` | `password123` |
+| Feature / Action | ☀️ Panel Owner (`owner@...`) | 💰 Investor (`investor@...`) | 🛡️ Admin (`admin@...`) |
+|---|:---:|:---:|:---:|
+| **Default User** | Arjun Sharma (`owner@solarvest.com`) | Priya Investments (`investor@solarvest.com`) | Admin User (`admin@solarvest.com`) |
+| **Password** | `password123` | `password123` | `password123` |
+| **Sidebar Badge** | Avatar `A` · `owner` | Avatar `P` · `investor` | Avatar `A` · `admin` |
+| **Asset Scope** | Only panels they own | **All panels across platform** | **All panels across platform** |
+| **Register Panel (`+ Add Panel`)** | ✅ Allowed | ❌ Blocked (Read-only) | ✅ Allowed |
+| **Delete / Edit Panels** | ✅ Only own panels | ❌ Blocked | ✅ Any panel |
+| **AI Predictions** | ✅ Own panels | ✅ Any panel | ✅ Any panel |
+| **Investor View Portfolio** | ✅ Own panels | ✅ Full cross-asset portfolio | ✅ Full cross-asset portfolio |
 
-Open `frontend/index.html` in your browser, or use the API directly.
-
-| Role     | Email                       | Password      |
-|----------|-----------------------------|---------------|
-| Owner    | `owner@solarvest.com`       | `password123` |
-| Investor | `investor@solarvest.com`    | `password123` |
-| Admin    | `admin@solarvest.com`       | `password123` |
+> See [ROLES.md](ROLES.md) for full role descriptions and permission boundaries.
 
 > **Note:** In-memory database resets on every restart. These demo accounts and 2 sample panels are re-created automatically.
 
